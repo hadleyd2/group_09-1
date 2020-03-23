@@ -90,7 +90,7 @@ correlogram <- function(df){
              tl.srt=45, #text angled for better viewing
              addCoef.col = "black", # Add correlation coefficient
              diag = FALSE,
-             title="Correlation of Some Columns",
+             title="Correlation between Relevant Variables",
              mar=c(0,0,1,0)) # Correctly positions Title of Correlogram
 }
 
