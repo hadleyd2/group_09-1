@@ -100,7 +100,11 @@ lm.qqplot <- function(lm.obj, lbl="QQ-Plot"){
     geom_qq(aes(sample=err)) +
     geom_abline(slope=1, intercept=0) +
     ggtitle(label=lbl) +
-    theme_bw(14)
+    theme_bw(14) +
+    theme(plot.title = element_text(size = 14),
+          axis.title = element_text(size = 14)) +
+    labs(x="Theoretical", y="Sample")
+  
   ggsave(paste(fname, '-QQPlot.png', sep=''), width=8, height=5, path=here::here("images"))
 }
 
