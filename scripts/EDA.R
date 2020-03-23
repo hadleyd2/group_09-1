@@ -9,7 +9,7 @@ and a violin plot (price vs. district) for exploratory data analysis and saves t
 seperate png files from cleaned data. This script takes in clean data CSV file path and 
 image directory path where plots will be exported as the variable arguments.
 
-Usage: exploratory_data_analysis.R --path_clean=<path_clean> --path_image=<path_image>" -> doc
+Usage: scripts/EDA.R --path_clean=<path_clean> --path_image=<path_image>" -> doc
 
 ## Load Libraries ####
 suppressPackageStartupMessages(library(tidyverse))
