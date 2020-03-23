@@ -119,8 +119,8 @@ violin_plot <- function(df, mean.price){
   mutate(district = factor(district, levels = unique(mean.price$district))) %>% #factor district by descending mean price
   ggplot(aes(district, price)) +
   geom_violin(stat = "ydensity") +
-  scale_y_log10() +  # change to log10 scale since density of price is scewed
-  ylab("Price (€)") +
+  scale_y_log10() +  # change to log10 scale since density of price is skewed
+  ylab(paste("Price (", "\u20AC", ")", sep='')) +
   xlab("District") +
   ggtitle("Distribution of Price for Each Barcelona District") +
   theme_bw(14) +
