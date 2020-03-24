@@ -85,3 +85,7 @@ Maria lives in Barcelona and wants to rent out her apartment as she travels over
 ### Dashboard Sketch
 
 ![First draft of Dashboard Sketch](images/Dashboard-Sketch.png)
+
+### Dashboard Usage
+
+From the main repo directory in Terminal, run the dashboard by entering the command: `Rscript app.R`
