@@ -22,6 +22,7 @@ Repository for Kristina Wright and Daniel Hadley group project for [STAT 547M](h
 | [01](https://stat545.stat.ubc.ca/evaluation/milestone_01/milestone_01/) | February 29, 2020 | [milestone01](https://hadleyd2.github.io/group_09-1/docs/milestone01/milestone01.html) |
 | [02](https://stat545.stat.ubc.ca/evaluation/milestone_02/milestone_02/) | March 7, 2020 | [milestone02](https://hadleyd2.github.io/group_09-1/docs/milestone02/milestone02.html) |
 | [03](https://stat545.stat.ubc.ca/evaluation/milestone_03/milestone_03/) | March 14, 2020 | [html](https://hadleyd2.github.io/group_09-1/docs/final_report.html) and [pdf](https://hadleyd2.github.io/group_09-1/docs/final_report.pdf) |
+| [04](https://stat545.stat.ubc.ca/evaluation/milestone_04/milestone_04/) | March 21, 2020 | [dashboard app](https://hadleyd2.github.io/group_09-1/app.R) |
 
 ## 3. Usage :computer:
 
