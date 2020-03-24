@@ -17,7 +17,8 @@ suppressPackageStartupMessages(library(plotly))
 
 ## Load Data ####
 df <- read_csv(file=here::here("data", "clean_listings.csv"),
-               col_types=cols())
+               col_types=cols()) %>% 
+  mutate(min_stay = factor(min_stay))
 
 ## Plot Functions ####
 make_violin <- function(xaxis="all") {
@@ -56,8 +57,8 @@ make_violin <- function(xaxis="all") {
 heading_title <- htmlH1('Airbnb.com Listing Prices in Barcelona, Spain')
 
 # x-axis options for Violin Plot
-xaxisKey <- tibble(label = c("All", "District", "Room Type"),
-                   value = c("all", "district", "room_type"))
+xaxisKey <- tibble(label = c("All", "District", "Room Type", "Minimum Stay"),
+                   value = c("all", "district", "room_type", "min_stay"))
 
 # x-axis dropdown for Violin Plot
 xaxis.Dropdown <- dccDropdown(
