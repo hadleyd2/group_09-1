@@ -88,4 +88,12 @@ Maria lives in Barcelona and wants to rent out her apartment while she travels f
 
 ### Dashboard Usage
 
-From the main repo directory in Terminal, run the dashboard by entering the command: `Rscript app.R`
+  - Clone this repository locally
+  
+  - From the main repo directory in Terminal, run the dashboard by entering the command: `Rscript app.R`
+  
+  - To view the dashboard:
+  
+      - copy the number sequence of the form: `127.0.0.1:8050` that appear after `start:` in the terminal
+      
+      - paste the number sequence into the address bar of a web browser such as chrome or firefox
