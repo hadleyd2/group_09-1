@@ -20,81 +20,135 @@ df <- read_csv(file=here::here("data", "clean_listings.csv"),
                col_types=cols()) %>% 
   mutate(min_stay = factor(min_stay))
 
-## Plot Functions ####
-make_violin <- function(xaxis="all") {
-  
-  #get label matching grouping factor
-  x_label <- xaxisKey$label[xaxisKey$value==xaxis]
-  
-  #create ggplot when no grouping is selected
-  if (x_label == "All") {
-    p <- df %>% 
-      ggplot(aes(x=price)) + 
-      geom_density() +
-      theme_bw(14) +
-      theme(plot.title = element_text(size = 14)) +
-      ggtitle(label="Price Density for All Listings") +
-      scale_x_continuous("Listing Price per Night", labels=scales::dollar_format(suffix="\u20AC", prefix='')) +
-      ylab("Density")
-  } else {
-    p <- ggplot(df, aes(x=!!sym(xaxis), y=price)) +
-      geom_violin(stat = "ydensity") +
-      scale_y_log10() +  # change to log10 scale since density of price is skewed
-      ylab(paste("Price (", "\u20AC", ")", sep='')) +
-      xlab(x_label) +
-      ggtitle("Distribution of Listing Price") +
-      theme_bw(14) +
-      theme(plot.title = element_text(size = 14), 
-            axis.text.x = element_text(angle = 60, hjust = 1))
-  }
-  
-  ggplotly(p)
-}
+## Load Functions ####
+source('dash_functions.R')
 
-## Assign Components to Variables ####
-
-# Title of Dashboard
-heading_title <- htmlH1('Airbnb.com Listing Prices in Barcelona, Spain')
-
-# x-axis options for Violin Plot
-xaxisKey <- tibble(label = c("All", "District", "Room Type", "Minimum Stay"),
-                   value = c("all", "district", "room_type", "min_stay"))
-
-# x-axis dropdown for Violin Plot
-xaxis.Dropdown <- dccDropdown(
-  id = "x-axis",
-  options = map(
-    1:nrow(xaxisKey), function(i){
-      list(label=xaxisKey$label[i], value=xaxisKey$value[i])
-    }),
-  value = "all"
-)
-
-# Density Plot
-dens.graph <- dccGraph(
-  id = 'dens-graph',
-  figure=make_violin() # gets initial data using argument defaults
-)
+## Load Components ####
+source('dash_components.R')
 
 ## Create Dash Instance ####
 
 app <- Dash$new()
 
+## Create Layout Elements ####
+
+# Header
+div_header <- htmlDiv(
+  list(heading_title,
+       heading_name),
+  style = list(backgroundColor = '#337DFF',
+               textAlign='center',
+               color='white',
+               margin=5,
+               marginTop=0)
+)
+
+# Grouping Dropdown
+group_density <- htmlDiv(
+  list(htmlLabel('Select Grouping'),
+       group.Dropdown),
+  style=list('width'='40%',
+             marginTop=40)
+)
+
+# Price Slider
+
+price.mrks <- as.character(round(quantile(df$price, probs=seq(0, 100, 10)/100)))
+price.mrks <- setNames(as.list(price.mrks), nm=1:11)
+price_slider <- htmlDiv(
+  list(htmlLabel('Filter Listings by Price'),
+       dccRangeSlider(id='price-slider',
+                      min=1,
+                      max=11,
+                      marks=price.mrks,
+                      value=list(1, 11))
+       ),
+  style=list('width'='80%',
+             'padding-left'='10%',
+             'padding-right'='20%',
+             marginTop=0)
+)
+
+# Minimum Night Stay Slider
+
+stay.mrks <- as.character(levels(df$min_stay))
+stay.mrks <- setNames(as.list(stay.mrks), nm=seq_along(levels(df$min_stay)))
+stay_slider <- htmlDiv(
+  list(htmlLabel('Filter Listings by Minimum Night Stay'),
+       dccSlider(id='stay-slider',
+                      min=1,
+                      max=length(stay.mrks),
+                      marks=stay.mrks,
+                      value=length(stay.mrks))
+  ),
+  style=list('width'='80%',
+             'padding-left'='10%',
+             'padding-right'='20%',
+             marginTop=0)
+)
+
+# Distance Percentile Slider
+
+dist.mrks <- as.character(quantile(df$distance, probs=seq(0, 100, 25)/100))
+dist.mrks <- setNames(as.list(paste0(seq(0, 100, 25), '%')), nm=1:5)
+dist_slider <- htmlDiv(
+  list(htmlLabel('Filter Listings by Distance from City Center (Percentile)'),
+       dccSlider(id='dist-slider',
+                 min=1,
+                 max=5,
+                 marks=dist.mrks,
+                 value=length(dist.mrks))
+  ),
+  style=list('width'='80%',
+             'padding-left'='10%',
+             'padding-right'='20%',
+             marginTop=0)
+)
+
+## X-axis Dropdown for Scatterplot
+scatterplot_xaxis <- htmlDiv(
+  list(htmlLabel('Select Independent Variable'),
+       xaxis.Dropdown),
+  style=list('width'='40%',
+             margin=10)
+)
+
+## Transformation Radio Button for Independent Variable
+scatterplot_trans <- htmlDiv(
+  list(htmlDiv(list(htmlLabel('Apply Transform to Independent Variable'),
+                    x.button),
+               style=list(margin=5)),
+       htmlDiv(list(htmlLabel('Apply Transform to Price'),
+                    y.button),
+               style=list(margin=5))),
+  style=list('width'='50%')
+)
+
 ## Specify App layout ####
 
 app$layout(
+  # Add Title
+  div_header,
+      
+  # This Div is for the entire dashboard
   htmlDiv(
     list(
-      # Add Title
-      heading_title,
-      
-      # Add Label for Grouping Dropdown for Density plot
-      htmlLabel('Select Grouping'),
-      xaxis.Dropdown,
-      htmlIframe(height=50, width=0, style=list(borderWidth = 0)),
-      dens.graph
+      #LHS of dashboard with group dropdown and density plot
+      htmlDiv(list(htmlLabel("Data Exploration"),
+                   group_density, 
+                   dens.graph),
+              style=list('width'='50%')), #end of LHS of Dashboard
+      htmlDiv(list(htmlLabel("Data Analysis"),
+                   price_slider, 
+                   stay_slider,
+                   dist_slider,
+                   htmlDiv(list(scatterplot_xaxis,
+                                scatterplot_trans),
+                           style=list('display'='flex'))),
+              style=list('width'='50%'))
+      ),
+    style=list('display'='flex')
     )
-  )
 )
 
 ## App Callbacks ####
@@ -103,7 +157,7 @@ app$callback(
   #update density plot whose id is dens-graph
   output=list(id = 'dens-graph', property='figure'),
   #based on the x-axis dropdown for grouping
-  params=list(input(id = 'x-axis', property='value')),
+  params=list(input(id = 'group', property='value')),
   #this translates your list of params into function arguments
   function(xaxis_value) {
     make_violin(xaxis_value)
