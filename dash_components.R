@@ -11,7 +11,8 @@ heading_name <- htmlH3('Daniel Hadley')
 # Instructions
 instructions <- dccMarkdown("
 
-Welcome to my dashboard where we explore Airbnb listings for Barcelona!
+Welcome to my dashboard where we explore Airbnb listings for Barcelona! 
+In particular, this dashboard should help you find variables linearly related to listing prices.
 
 Under **Data Exploration**, you can view the price density for all listings or select a grouping variable from the dropdown and view the price density by group.
 
