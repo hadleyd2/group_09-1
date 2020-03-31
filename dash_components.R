@@ -55,6 +55,26 @@ price_slider <- dccRangeSlider(id='price-slider',
                                marks=price.mrks,
                                value=list(min(df$price), max(df$price)))
 
+# Minimum Night Stay Slider
+
+stay.mrks <- as.character(levels(df$min_stay))
+stay.mrks <- setNames(as.list(stay.mrks), nm=seq_along(levels(df$min_stay)))
+stay_slider <- dccSlider(id='stay-slider',
+                         min=1,
+                         max=length(stay.mrks),
+                         marks=stay.mrks,
+                         value=length(stay.mrks))
+
+# Distance Percentile Slider
+
+dist.mrks <- as.character(quantile(df$distance, probs=seq(0, 100, 25)/100))
+dist.mrks <- setNames(as.list(paste0(seq(0, 100, 25), '%')), nm=1:5)
+dist_slider <- dccSlider(id='dist-slider',
+                         min=1,
+                         max=5,
+                         marks=dist.mrks,
+                         value=length(dist.mrks))
+
 # X-axis options for Scatter Plot
 xaxisKey <- tibble(label = c("Latitude", "Longitude", "Reviews", "Reviews Per Month", "Host Listings", "Distance"),
                    value = c("latitude", "longitude", "reviews", "reviews_per_month", "host_listings", "distance"))

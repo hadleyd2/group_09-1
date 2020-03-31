@@ -31,7 +31,7 @@ make_violin <- function(xaxis="all") {
 }
 
 ## Scatterplot with Trendline
-make_scatter <- function(xaxis='reviews', pricerange=c(0,0)) {
+make_scatter <- function(xaxis='reviews', pricerange=c(0,0), stayfilter=5) {
   
   ## Find label for X-axis variable
   x_label <- xaxisKey$label[xaxisKey$value==xaxis]
@@ -41,7 +41,8 @@ make_scatter <- function(xaxis='reviews', pricerange=c(0,0)) {
   
   p <- df %>% 
     filter(price >= pricerange[1],
-           price <= pricerange[2]) %>% 
+           price <= pricerange[2],
+           as.numeric(min_stay) <= stayfilter) %>% 
     ggplot(aes(x=!!sym(xaxis), y=price)) +
     geom_point() +
     geom_smooth(method='lm') +

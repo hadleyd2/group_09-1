@@ -51,42 +51,6 @@ group_density <- htmlDiv(
              marginTop=40)
 )
 
-# Minimum Night Stay Slider
-
-stay.mrks <- as.character(levels(df$min_stay))
-stay.mrks <- setNames(as.list(stay.mrks), nm=seq_along(levels(df$min_stay)))
-stay_slider <- htmlDiv(
-  list(htmlLabel('Filter Listings by Minimum Night Stay'),
-       dccSlider(id='stay-slider',
-                      min=1,
-                      max=length(stay.mrks),
-                      marks=stay.mrks,
-                      value=length(stay.mrks))
-  ),
-  style=list('width'='80%',
-             'padding-left'='10%',
-             'padding-right'='20%',
-             marginTop=0)
-)
-
-# Distance Percentile Slider
-
-dist.mrks <- as.character(quantile(df$distance, probs=seq(0, 100, 25)/100))
-dist.mrks <- setNames(as.list(paste0(seq(0, 100, 25), '%')), nm=1:5)
-dist_slider <- htmlDiv(
-  list(htmlLabel('Filter Listings by Distance from City Center (Percentile)'),
-       dccSlider(id='dist-slider',
-                 min=1,
-                 max=5,
-                 marks=dist.mrks,
-                 value=length(dist.mrks))
-  ),
-  style=list('width'='80%',
-             'padding-left'='10%',
-             'padding-right'='20%',
-             marginTop=0)
-)
-
 ## X-axis Dropdown for Scatterplot
 scatterplot_xaxis <- htmlDiv(
   list(htmlLabel('Select Independent Variable'),
@@ -130,8 +94,20 @@ app$layout(
                                 'padding-left'='10%',
                                 'padding-right'='20%',
                                 marginTop=0)), 
-                   stay_slider,
-                   dist_slider,
+                   htmlDiv(
+                     list(htmlLabel('Filter Listings by Minimum Night Stay'),
+                          stay_slider),
+                     style=list('width'='80%',
+                                'padding-left'='10%',
+                                'padding-right'='20%',
+                                marginTop=0)),
+                   htmlDiv(
+                     list(htmlLabel('Filter Listings by Distance from City Center (Percentile)'),
+                          dist_slider),
+                     style=list('width'='80%',
+                                'padding-left'='10%',
+                                'padding-right'='20%',
+                                marginTop=0)),
                    htmlDiv(list(scatterplot_xaxis,
                                 scatterplot_trans),
                            style=list('display'='flex')),
@@ -162,10 +138,11 @@ app$callback(
   output=list(id = 'scatter', property='figure'),
   #based on the x-axis dropdown for selecting independent variable
   params=list(input(id = 'x-axis', property='value'),
-              input(id = 'price-slider', property='value')),
+              input(id = 'price-slider', property='value'),
+              input(id = 'stay-slider', property='value')),
   #this translates your list of params into function arguments
-  function(xaxis_value, price_filter) {
-    make_scatter(xaxis=xaxis_value, pricerange=unlist(price_filter))
+  function(xaxis_value, price_filter, stay_filter) {
+    make_scatter(xaxis=xaxis_value, pricerange=unlist(price_filter), stayfilter=stay_filter)
   })
 
 ## Run App ####
