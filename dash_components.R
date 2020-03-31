@@ -47,13 +47,13 @@ group.Dropdown <- dccDropdown(
 ## Scatterplot with Trendline (and dependencies) ####
 
 # Price Slider as Filter for Scatterplot
-price.mrks <- as.character(round(seq(min(df$price), max(df$price), len=10)))
+price.mrks <- as.character(seq(0, 500, by=50))
 price.mrks <- setNames(as.list(price.mrks), nm=price.mrks)
 price_slider <- dccRangeSlider(id='price-slider',
-                               min=min(df$price),
-                               max=max(df$price),
+                               min=0,
+                               max=500,
                                marks=price.mrks,
-                               value=list(min(df$price), max(df$price)))
+                               value=list(0, 500))
 
 # Minimum Night Stay Slider
 
@@ -69,11 +69,11 @@ stay_slider <- dccRangeSlider(id='stay-slider',
 
 dist.mrks <- as.character(quantile(df$distance, probs=seq(0, 100, 25)/100))
 dist.mrks <- setNames(as.list(paste0(seq(0, 100, 25), '%')), nm=1:5)
-dist_slider <- dccSlider(id='dist-slider',
+dist_slider <- dccRangeSlider(id='dist-slider',
                          min=1,
                          max=5,
                          marks=dist.mrks,
-                         value=length(dist.mrks))
+                         value=list(1, 5))
 
 # X-axis options for Scatter Plot
 xaxisKey <- tibble(label = c("Latitude", "Longitude", "Reviews", "Reviews Per Month", "Host Listings", "Distance"),

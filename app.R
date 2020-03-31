@@ -139,10 +139,14 @@ app$callback(
   #based on the x-axis dropdown for selecting independent variable
   params=list(input(id = 'x-axis', property='value'),
               input(id = 'price-slider', property='value'),
-              input(id = 'stay-slider', property='value')),
+              input(id = 'stay-slider', property='value'),
+              input(id = 'dist-slider', property='value')),
   #this translates your list of params into function arguments
-  function(xaxis_value, price_filter, stay_filter) {
-    make_scatter(xaxis=xaxis_value, pricerange=unlist(price_filter), stayfilter=unlist(stay_filter))
+  function(xaxis_value, price_filter, stay_filter, dist_filter) {
+    make_scatter(xaxis=xaxis_value, 
+                 pricerange=unlist(price_filter), 
+                 stayfilter=unlist(stay_filter),
+                 distancefilter=unlist(dist_filter))
   })
 
 ## Run App ####
