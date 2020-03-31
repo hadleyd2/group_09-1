@@ -59,11 +59,11 @@ price_slider <- dccRangeSlider(id='price-slider',
 
 stay.mrks <- as.character(levels(df$min_stay))
 stay.mrks <- setNames(as.list(stay.mrks), nm=seq_along(levels(df$min_stay)))
-stay_slider <- dccSlider(id='stay-slider',
+stay_slider <- dccRangeSlider(id='stay-slider',
                          min=1,
-                         max=length(stay.mrks),
+                         max=5,
                          marks=stay.mrks,
-                         value=length(stay.mrks))
+                         value=list(1, 5))
 
 # Distance Percentile Slider
 

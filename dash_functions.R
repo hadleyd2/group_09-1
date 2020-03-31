@@ -42,7 +42,8 @@ make_scatter <- function(xaxis='reviews', pricerange=c(0,0), stayfilter=5) {
   p <- df %>% 
     filter(price >= pricerange[1],
            price <= pricerange[2],
-           as.numeric(min_stay) <= stayfilter) %>% 
+           as.numeric(min_stay) <= stayfilter[2],
+           as.numeric(min_stay) >= stayfilter[1]) %>% 
     ggplot(aes(x=!!sym(xaxis), y=price)) +
     geom_point() +
     geom_smooth(method='lm') +

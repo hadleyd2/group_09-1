@@ -142,7 +142,7 @@ app$callback(
               input(id = 'stay-slider', property='value')),
   #this translates your list of params into function arguments
   function(xaxis_value, price_filter, stay_filter) {
-    make_scatter(xaxis=xaxis_value, pricerange=unlist(price_filter), stayfilter=stay_filter)
+    make_scatter(xaxis=xaxis_value, pricerange=unlist(price_filter), stayfilter=unlist(stay_filter))
   })
 
 ## Run App ####
