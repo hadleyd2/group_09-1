@@ -51,24 +51,6 @@ group_density <- htmlDiv(
              marginTop=40)
 )
 
-# Price Slider
-
-price.mrks <- as.character(round(quantile(df$price, probs=seq(0, 100, 10)/100)))
-price.mrks <- setNames(as.list(price.mrks), nm=1:11)
-price_slider <- htmlDiv(
-  list(htmlLabel('Filter Listings by Price'),
-       dccRangeSlider(id='price-slider',
-                      min=1,
-                      max=11,
-                      marks=price.mrks,
-                      value=list(1, 11))
-       ),
-  style=list('width'='80%',
-             'padding-left'='10%',
-             'padding-right'='20%',
-             marginTop=0)
-)
-
 # Minimum Night Stay Slider
 
 stay.mrks <- as.character(levels(df$min_stay))
@@ -133,18 +115,27 @@ app$layout(
   # This Div is for the entire dashboard
   htmlDiv(
     list(
-      #LHS of dashboard with group dropdown and density plot
+      ##LHS of dashboard with group dropdown and density plot
       htmlDiv(list(htmlLabel("Data Exploration"),
                    group_density, 
                    dens.graph),
               style=list('width'='50%')), #end of LHS of Dashboard
+      
+      ##RHS of dashboard with scatterplot and filters/dropdowns/radios
       htmlDiv(list(htmlLabel("Data Analysis"),
-                   price_slider, 
+                   htmlDiv(
+                     list(htmlLabel('Filter Listings by Price'),
+                          price_slider),
+                     style=list('width'='80%',
+                                'padding-left'='10%',
+                                'padding-right'='20%',
+                                marginTop=0)), 
                    stay_slider,
                    dist_slider,
                    htmlDiv(list(scatterplot_xaxis,
                                 scatterplot_trans),
-                           style=list('display'='flex'))),
+                           style=list('display'='flex')),
+                   scat_graph),
               style=list('width'='50%'))
       ),
     style=list('display'='flex')
@@ -152,6 +143,8 @@ app$layout(
 )
 
 ## App Callbacks ####
+
+# Grouped Density Plot
 
 app$callback(
   #update density plot whose id is dens-graph
@@ -161,6 +154,18 @@ app$callback(
   #this translates your list of params into function arguments
   function(xaxis_value) {
     make_violin(xaxis_value)
+  })
+
+# Scatterplot with Trendline
+app$callback(
+  #update scsatterplot
+  output=list(id = 'scatter', property='figure'),
+  #based on the x-axis dropdown for selecting independent variable
+  params=list(input(id = 'x-axis', property='value'),
+              input(id = 'price-slider', property='value')),
+  #this translates your list of params into function arguments
+  function(xaxis_value, price_filter) {
+    make_scatter(xaxis=xaxis_value, pricerange=unlist(price_filter))
   })
 
 ## Run App ####

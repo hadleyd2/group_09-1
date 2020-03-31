@@ -1,10 +1,14 @@
 ## Create dash components
 
+## Header Components (including text) ####
+
 # Title ####
 heading_title <- htmlH1('Airbnb.com Listing Prices in Barcelona, Spain') 
 
 #Sub-title for Author ####
 heading_name <- htmlH3('Daniel Hadley')
+
+## Grouped Density Plot Components (and its dependencies) ####
 
 # Group options for Violin Plot
 groupKey <- tibble(label = c("No Grouping", "District", "Room Type", "Minimum Stay"),
@@ -40,6 +44,17 @@ group.Dropdown <- dccDropdown(
   value = "all"
 )
 
+## Scatterplot with Trendline (and dependencies) ####
+
+# Price Slider as Filter for Scatterplot
+price.mrks <- as.character(round(seq(min(df$price), max(df$price), len=10)))
+price.mrks <- setNames(as.list(price.mrks), nm=price.mrks)
+price_slider <- dccRangeSlider(id='price-slider',
+                               min=min(df$price),
+                               max=max(df$price),
+                               marks=price.mrks,
+                               value=list(min(df$price), max(df$price)))
+
 # X-axis options for Scatter Plot
 xaxisKey <- tibble(label = c("Latitude", "Longitude", "Reviews", "Reviews Per Month", "Host Listings", "Distance"),
                    value = c("latitude", "longitude", "reviews", "reviews_per_month", "host_listings", "distance"))
@@ -51,8 +66,17 @@ xaxis.Dropdown <- dccDropdown(
     1:nrow(xaxisKey), function(i){
       list(label=xaxisKey$label[i], value=xaxisKey$value[i])
     }),
-  value = "Reviews"
+  value = "reviews"
 )
+
+# Minimum Night Stay Filter for Scatterplot
+
+
+# Scatterplot with Trendline
+scat_graph <- dccGraph(id='scatter',
+                       figure=make_scatter())
+
+## Radio Buttons ####
 
 # Independent Variable Transformation
 x.button <- dccRadioItems(

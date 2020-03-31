@@ -29,3 +29,27 @@ make_violin <- function(xaxis="all") {
   
   ggplotly(p)
 }
+
+## Scatterplot with Trendline
+make_scatter <- function(xaxis='reviews', pricerange=c(0,0)) {
+  
+  ## Find label for X-axis variable
+  x_label <- xaxisKey$label[xaxisKey$value==xaxis]
+  
+  ## Make filter via pricerange argument
+  if (sum(pricerange) == 0) pricerange <- c(min(df$price), max(df$price))
+  
+  p <- df %>% 
+    filter(price >= pricerange[1],
+           price <= pricerange[2]) %>% 
+    ggplot(aes(x=!!sym(xaxis), y=price)) +
+    geom_point() +
+    geom_smooth(method='lm') +
+    xlab(x_label) +
+    scale_y_continuous("Price", 
+                       labels=scales::dollar_format(suffix="\u20AC", prefix='')) +
+    ggtitle(paste0("Scatterplot of ", x_label, " vs Price with Trendline")) +
+    theme_bw()
+  
+  ggplotly(p)
+}
