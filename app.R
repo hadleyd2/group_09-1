@@ -48,7 +48,7 @@ group_density <- htmlDiv(
   list(htmlLabel('Select Grouping'),
        group.Dropdown),
   style=list('width'='40%',
-             marginTop=40)
+             margin=40)
 )
 
 ## X-axis Dropdown for Scatterplot
@@ -75,18 +75,19 @@ scatterplot_trans <- htmlDiv(
 app$layout(
   # Add Title
   div_header,
-      
+  instructions,
   # This Div is for the entire dashboard
   htmlDiv(
     list(
       ##LHS of dashboard with group dropdown and density plot
-      htmlDiv(list(htmlLabel("Data Exploration"),
+      htmlDiv(list(dccMarkdown("**Data Exploration**"),
                    group_density, 
                    dens.graph),
-              style=list('width'='50%')), #end of LHS of Dashboard
+              style=list('width'='45%',
+                         margin=20)), #end of LHS of Dashboard
       
       ##RHS of dashboard with scatterplot and filters/dropdowns/radios
-      htmlDiv(list(htmlLabel("Data Analysis"),
+      htmlDiv(list(dccMarkdown("**Data Analysis**"),
                    htmlDiv(
                      list(htmlLabel('Filter Listings by Price'),
                           price_slider),
@@ -140,13 +141,17 @@ app$callback(
   params=list(input(id = 'x-axis', property='value'),
               input(id = 'price-slider', property='value'),
               input(id = 'stay-slider', property='value'),
-              input(id = 'dist-slider', property='value')),
+              input(id = 'dist-slider', property='value'),
+              input(id = 'xaxis-transform', property='value'),
+              input(id = 'yaxis-transform', property='value')),
   #this translates your list of params into function arguments
-  function(xaxis_value, price_filter, stay_filter, dist_filter) {
+  function(xaxis_value, price_filter, stay_filter, dist_filter, x_trans, y_trans) {
     make_scatter(xaxis=xaxis_value, 
                  pricerange=unlist(price_filter), 
                  stayfilter=unlist(stay_filter),
-                 distancefilter=unlist(dist_filter))
+                 distancefilter=unlist(dist_filter),
+                 x.trans=x_trans,
+                 y.trans=y_trans)
   })
 
 ## Run App ####

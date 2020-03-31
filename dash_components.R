@@ -2,11 +2,25 @@
 
 ## Header Components (including text) ####
 
-# Title ####
+# Title
 heading_title <- htmlH1('Airbnb.com Listing Prices in Barcelona, Spain') 
 
-#Sub-title for Author ####
+#Sub-title for Author
 heading_name <- htmlH3('Daniel Hadley')
+
+# Instructions
+instructions <- dccMarkdown("
+
+Welcome to my dashboard where we explore Airbnb listings for Barcelona!
+
+Under **Data Exploration**, you can view the price density for all listings or select a grouping variable from the dropdown and view the price density by group.
+
+Under **Data Analysis**, you can filter listings by price, minimum night stay, or the distance from city center. 
+You can select a range of values for all three filters, and the filters work together to filter listings meeting all criteria.
+Additionally, a scatterplot is presented with a trendline to allow you to view the linear relationship between price 
+and the variable you select from the *Select Independent Variable* dropdown.
+Finally, you can apply transformations to either price or the independent variable to see if this improves
+the linear relationship.")
 
 ## Grouped Density Plot Components (and its dependencies) ####
 
@@ -88,8 +102,6 @@ xaxis.Dropdown <- dccDropdown(
     }),
   value = "reviews"
 )
-
-# Minimum Night Stay Filter for Scatterplot
 
 
 # Scatterplot with Trendline

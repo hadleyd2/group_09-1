@@ -31,7 +31,12 @@ make_violin <- function(xaxis="all") {
 }
 
 ## Scatterplot with Trendline
-make_scatter <- function(xaxis='reviews', pricerange=c(0,0), stayfilter=c(1, 5), distancefilter=c(1, 5)) {
+make_scatter <- function(xaxis='reviews', 
+                         pricerange=c(0,0), 
+                         stayfilter=c(1, 5), 
+                         distancefilter=c(1, 5),
+                         x.trans='none',
+                         y.trans='none') {
   
   ## Find label for X-axis variable
   x_label <- xaxisKey$label[xaxisKey$value==xaxis]
@@ -39,6 +44,7 @@ make_scatter <- function(xaxis='reviews', pricerange=c(0,0), stayfilter=c(1, 5),
   ## Make filter via pricerange argument
   if (sum(pricerange) == 0) pricerange <- c(min(df$price), max(df$price))
   
+  ## Load data, filter, and select variables
   p <- df %>% 
     filter(price >= pricerange[1],
            price <= pricerange[2],
@@ -46,7 +52,18 @@ make_scatter <- function(xaxis='reviews', pricerange=c(0,0), stayfilter=c(1, 5),
            as.numeric(min_stay) <= stayfilter[2],
            distance >= quantile(df$distance)[distancefilter[1]],
            distance <= quantile(df$distance)[distancefilter[2]]) %>% 
-    ggplot(aes(x=!!sym(xaxis), y=price)) +
+    select(!!sym(xaxis), price) %>%
+    mutate(test = switch(x.trans,
+                          none = !!sym(xaxis),
+                          log = log(!!sym(xaxis)),
+                          root = sqrt(!!sym(xaxis)),
+                          reciprocal = 1/(!!sym(xaxis)))) %>% 
+    mutate(price = switch(y.trans,
+                         none = price,
+                         log = log(price),
+                         root = sqrt(price),
+                         reciprocal = 1/(price))) %>% 
+    ggplot(aes(x=test, y=price)) +
     geom_point(alpha=0.3) +
     geom_smooth(method='lm') +
     xlab(x_label) +
