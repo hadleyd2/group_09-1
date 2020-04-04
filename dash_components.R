@@ -78,7 +78,7 @@ stay_slider <- dccRangeSlider(id='stay-slider',
                          min=1,
                          max=5,
                          marks=stay.mrks,
-                         value=list(1, 5))
+                         value=list(5, 5)) ## be sure to change back to 1, 5
 
 # Distance Percentile Slider
 
@@ -130,3 +130,8 @@ y.button <- dccRadioItems(
                  list(label = 'Reciprocal', value = 'reciprocal')),
   value = 'none'
 )
+
+
+
+
+

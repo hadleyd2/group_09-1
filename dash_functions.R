@@ -24,7 +24,7 @@ make_violin <- function(xaxis="all") {
       ggtitle("Distribution of Listing Price") +
       theme_bw(14) +
       theme(plot.title = element_text(size = 14), 
-            axis.text.x = element_text(angle = 60, hjust = 1))
+            axis.text.x = element_text(angle = 60*as.numeric(xaxis!='min_stay'), hjust = 1))
   }
   
   ggplotly(p)

@@ -61,7 +61,7 @@ scatterplot_xaxis <- htmlDiv(
 
 ## Transformation Radio Button for Independent Variable
 scatterplot_trans <- htmlDiv(
-  list(htmlDiv(list(htmlLabel('Apply Transform to Independent Variable'),
+  list(htmlDiv(list(htmlLabel(id='trans-label'),
                     x.button),
                style=list(margin=5)),
        htmlDiv(list(htmlLabel('Apply Transform to Price'),
@@ -94,21 +94,21 @@ app$layout(
                      style=list('width'='80%',
                                 'padding-left'='10%',
                                 'padding-right'='20%',
-                                marginTop=0)), 
+                                margin=5)), 
                    htmlDiv(
                      list(htmlLabel('Filter Listings by Minimum Night Stay'),
                           stay_slider),
                      style=list('width'='80%',
                                 'padding-left'='10%',
                                 'padding-right'='20%',
-                                marginTop=0)),
+                                margin=5)),
                    htmlDiv(
                      list(htmlLabel('Filter Listings by Distance from City Center (Percentile)'),
                           dist_slider),
                      style=list('width'='80%',
                                 'padding-left'='10%',
                                 'padding-right'='20%',
-                                marginTop=0)),
+                                margin=5)),
                    htmlDiv(list(scatterplot_xaxis,
                                 scatterplot_trans),
                            style=list('display'='flex')),
@@ -122,7 +122,6 @@ app$layout(
 ## App Callbacks ####
 
 # Grouped Density Plot
-
 app$callback(
   #update density plot whose id is dens-graph
   output=list(id = 'dens-graph', property='figure'),
@@ -152,6 +151,17 @@ app$callback(
                  distancefilter=unlist(dist_filter),
                  x.trans=x_trans,
                  y.trans=y_trans)
+  })
+
+app$callback(
+  #update scsatterplot
+  output=list(id = 'trans-label', property='children'),
+  #based on the x-axis dropdown for selecting independent variable
+  params=list(input(id = 'x-axis', property='value')),
+  #this translates your list of params into function arguments
+  function(xaxis_value) {
+    x_label <- xaxisKey$label[xaxisKey$value==xaxis_value]
+    return((paste0("Apply Transform to ", x_label)))
   })
 
 ## Run App ####
