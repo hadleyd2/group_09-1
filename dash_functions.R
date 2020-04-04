@@ -12,8 +12,7 @@ make_violin <- function(xaxis="all") {
       theme_bw(14) +
       theme(plot.title = element_text(size = 14)) +
       ggtitle(label="Price Density for All Listings") +
-      scale_x_continuous("Listing Price per Night", 
-                         labels=scales::dollar_format(suffix="\u20AC", prefix='')) +
+      scale_x_continuous(paste0("Listing Price (", "\u20AC", ") per Night")) +
       ylab("Density")
   } else {
     p <- ggplot(df, aes(x=!!sym(xaxis), y=price)) +
@@ -45,7 +44,7 @@ make_scatter <- function(xaxis='reviews',
   if (sum(pricerange) == 0) pricerange <- c(min(df$price), max(df$price))
   
   ## Load data, filter, and select variables
-  p <- df %>% 
+  df.tmp <- df %>%
     filter(price >= pricerange[1],
            price <= pricerange[2],
            as.numeric(min_stay) >= stayfilter[1],
@@ -53,7 +52,7 @@ make_scatter <- function(xaxis='reviews',
            distance >= quantile(df$distance)[distancefilter[1]],
            distance <= quantile(df$distance)[distancefilter[2]]) %>% 
     select(!!sym(xaxis), price) %>%
-    mutate(test = switch(x.trans,
+    mutate(xaxis = switch(x.trans,
                           none = !!sym(xaxis),
                           log = log(!!sym(xaxis)),
                           root = sqrt(!!sym(xaxis)),
@@ -62,15 +61,40 @@ make_scatter <- function(xaxis='reviews',
                          none = price,
                          log = log(price),
                          root = sqrt(price),
-                         reciprocal = 1/(price))) %>% 
-    ggplot(aes(x=test, y=price)) +
-    geom_point(alpha=0.3) +
-    geom_smooth(method='lm') +
-    xlab(x_label) +
-    scale_y_continuous("Price", 
-                       labels=scales::dollar_format(suffix="\u20AC", prefix='')) +
-    ggtitle(paste0("Scatterplot of ", x_label, " vs Price with Trendline")) +
-    theme_bw()
+                         reciprocal = 1/(price))) 
+  
+  if (x_label == 'Minimum Stay') {
+    if (stayfilter[1] == stayfilter[2]) {
+    p <- df.tmp %>% 
+      ggplot(aes(x=!!sym(xaxis), y=price)) +
+      geom_jitter(alpha=0.3, width=0.25) + 
+      geom_abline(intercept=mean(df.tmp$price), slope=0) +
+      xlab(x_label) +
+      scale_y_continuous(paste0("Price (", "\u20AC", ")")) +
+      ggtitle(paste0("Scatterplot of ", x_label, " vs Price with Trendline")) +
+      theme_bw(14)
+    } else {
+      p <- df.tmp %>% 
+        mutate(xaxis = as.numeric(as.character(!!sym(xaxis)))) %>% 
+        ggplot(aes(x=!!sym(xaxis), y=price)) +
+        geom_jitter(alpha=0.3,width=0.1) +
+        geom_smooth(method='lm') + 
+        scale_x_discrete(name=x_label,
+                         breaks=c(as.character(stayfilter[1]:stayfilter[2])),
+                         labels=c(as.character(stayfilter[1]:stayfilter[2]))) +
+        scale_y_continuous(paste0("Price (", "\u20AC", ")")) +
+        ggtitle(paste0("Scatterplot of ", x_label, " vs Price with Trendline")) +
+        theme_bw(14)
+    }
+  } else {
+    p <- ggplot(df.tmp, aes(x=!!sym(xaxis), y=price)) +
+      geom_point(alpha=0.3) + 
+      geom_smooth(method='lm') + 
+      xlab(x_label) +
+      scale_y_continuous(paste0("Price (", "\u20AC", ")")) +
+      ggtitle(paste0("Scatterplot of ", x_label, " vs Price with Trendline")) +
+      theme_bw(14)
+  }
   
   ggplotly(p)
 }

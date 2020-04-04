@@ -68,7 +68,7 @@ price_slider <- dccRangeSlider(id='price-slider',
                                min=0,
                                max=500,
                                marks=price.mrks,
-                               value=list(0, 500))
+                               value=list(0, 100))
 
 # Minimum Night Stay Slider
 
@@ -91,8 +91,8 @@ dist_slider <- dccRangeSlider(id='dist-slider',
                          value=list(1, 5))
 
 # X-axis options for Scatter Plot
-xaxisKey <- tibble(label = c("Latitude", "Longitude", "Reviews", "Reviews Per Month", "Host Listings", "Distance"),
-                   value = c("latitude", "longitude", "reviews", "reviews_per_month", "host_listings", "distance"))
+xaxisKey <- tibble(label = c("Latitude", "Longitude", "Reviews", "Reviews Per Month", "Minimum Stay", "Host Listings", "Distance"),
+                   value = c("latitude", "longitude", "reviews", "reviews_per_month", "min_stay", "host_listings", "distance"))
 
 # X-axis dropdown for Scatterplot
 xaxis.Dropdown <- dccDropdown(
