@@ -22,10 +22,10 @@ df <- read_csv(file=here::here("data", "clean_listings.csv"),
   mutate(min_stay = factor(min_stay))
 
 ## Load Functions ####
-source('dash_functions.R')
+source(here::here('dash_functions.R'))
 
 ## Load Components ####
-source('dash_components.R')
+source(here::here('dash_components.R'))
 
 ## Create Dash Instance ####
 
