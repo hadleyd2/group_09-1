@@ -15,7 +15,7 @@ make_violin <- function(xaxis="all") {
       scale_x_continuous(paste0("Listing Price (", "\u20AC", ") per Night")) +
       ylab("Density")
   } else {
-    p <- ggplot(df, aes(x=!!sym(xaxis), y=price)) +
+    p <- ggplot(df, aes(x=!!sym(xaxis), y=price, color=!!sym(xaxis))) +
       geom_violin(stat = "ydensity") +
       scale_y_log10() +  # change to log10 scale since density of price is skewed
       ylab(paste("Price (", "\u20AC", ")", sep='')) +
@@ -23,7 +23,7 @@ make_violin <- function(xaxis="all") {
       ggtitle("Distribution of Listing Price") +
       theme_bw(14) +
       theme(plot.title = element_text(size = 14), 
-            axis.text.x = element_text(angle = 60*as.numeric(xaxis!='min_stay'), hjust = 1))
+            axis.text.x = element_blank())
   }
   
   ggplotly(p)
@@ -109,10 +109,11 @@ render_content <- function(tab) {
   } else if (tab == 'tab-2') {
     ## Histogram with dropdown for diamond clarity and
     ## radio option for y-axis scale
-    htmlDiv(list(group_density, 
-                 dens.graph),
-            style=list('width'='45%',
-                       margin=20))
+    htmlDiv(list(htmlDiv(list(group_density),
+                         style=list('flex-basis'='30%')), 
+                 htmlDiv(list(dens.graph),
+                         style=list('flex-basis'='70%'))),
+            )
   } else if (tab == 'tab-3') {
     ## Two diamond cut plots controlled by slider
     htmlDiv(list(htmlDiv(
