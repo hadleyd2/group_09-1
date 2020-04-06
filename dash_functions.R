@@ -118,31 +118,59 @@ render_content <- function(tab) {
             )
   } else if (tab == 'tab-3') {
     ## Two diamond cut plots controlled by slider
-    htmlDiv(list(htmlDiv(
-                   list(htmlLabel('Filter Listings by Price'),
-                        price_slider),
-                   style=list('width'='80%',
-                              'padding-left'='10%',
-                              'padding-right'='20%',
-                              margin=5)), 
-                 htmlDiv(
-                   list(htmlLabel('Filter Listings by Minimum Night Stay'),
-                        stay_slider),
-                   style=list('width'='80%',
-                              'padding-left'='10%',
-                              'padding-right'='20%',
-                              margin=5)),
-                 htmlDiv(
-                   list(htmlLabel('Filter Listings by Distance from City Center (Percentile)'),
-                        dist_slider),
-                   style=list('width'='80%',
-                              'padding-left'='10%',
-                              'padding-right'='20%',
-                              margin=5)),
-                 htmlDiv(list(scatterplot_xaxis,
-                              scatterplot_trans),
-                         style=list('display'='flex')),
-                 scat_graph),
-            style=list('width'='80%'))
+    # htmlDiv(list(htmlDiv(
+    #                list(htmlLabel('Filter Listings by Price'),
+    #                     price_slider),
+    #                style=list('width'='80%',
+    #                           'padding-left'='10%',
+    #                           'padding-right'='20%',
+    #                           margin=5)), 
+    #              htmlDiv(
+    #                list(htmlLabel('Filter Listings by Minimum Night Stay'),
+    #                     stay_slider),
+    #                style=list('width'='80%',
+    #                           'padding-left'='10%',
+    #                           'padding-right'='20%',
+    #                           margin=5)),
+    #              htmlDiv(
+    #                list(htmlLabel('Filter Listings by Distance from City Center (Percentile)'),
+    #                     dist_slider),
+    #                style=list('width'='80%',
+    #                           'padding-left'='10%',
+    #                           'padding-right'='20%',
+    #                           margin=5)),
+    #              htmlDiv(list(scatterplot_xaxis,
+    #                           scatterplot_trans),
+    #                      style=list('display'='flex')),
+    #              scat_graph),
+    #         style=list('width'='80%'))
+    htmlDiv(list(
+      ## Slider Filters
+      htmlDiv(list(
+        htmlDiv(list(htmlLabel('Filter Listings by Price'),
+                     price_slider),
+                style=list(margin=5)),
+        htmlDiv(list(htmlLabel('Filter Listings by Minimum Night Stay'),
+                     stay_slider),
+                style=list(margin=5)),
+        htmlDiv(list(htmlLabel('Filter Listings by Distance from City Center (Percentile)'),
+                     dist_slider),
+                style=list(margin=5)),
+        htmlDiv(list(htmlLabel(id='trans-label'),
+                     x.button),
+                style=list(margin=5)),
+        htmlDiv(list(htmlLabel('Apply Transform to Price'),
+                     y.button),
+                style=list(margin=5))),
+        style=list('flex-basis'='33%')
+        ),
+      htmlDiv(list(htmlLabel('Select Independent Variable'),
+                   xaxis.Dropdown,
+                   scat_graph),
+              style=list(margin=5,
+                         'flex-basis'='65%'))
+      ),
+      style=list('display'='flex')
+      )
   }
 }

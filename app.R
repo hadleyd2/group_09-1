@@ -56,20 +56,16 @@ group_density <- htmlDiv(
 scatterplot_xaxis <- htmlDiv(
   list(htmlLabel('Select Independent Variable'),
        xaxis.Dropdown),
-  style=list('width'='40%',
-             margin=10)
+  style=list(margin=10)
 )
 
 ## Transformation Radio Button for Independent Variable
-scatterplot_trans <- htmlDiv(
-  list(htmlDiv(list(htmlLabel(id='trans-label'),
-                    x.button),
-               style=list(margin=5)),
-       htmlDiv(list(htmlLabel('Apply Transform to Price'),
-                    y.button),
-               style=list(margin=5))),
-  style=list('width'='50%')
-)
+# scatterplot_trans <- htmlDiv(list(htmlLabel(id='trans-label'),
+#                     x.button),
+#                style=list(margin=5))
+#        htmlDiv(list(htmlLabel('Apply Transform to Price'),
+#                     y.button),
+#                style=list(margin=5))
 
 ## Specify App layout ####
 
