@@ -1,5 +1,6 @@
 # author: Daniel Hadley
-# date: 2020-03-21
+# date: 2020-04-04
+# Dash app for STAT547M Final Project
 
 "This script is the main file that creates a Dash app.
 
@@ -75,51 +76,22 @@ scatterplot_trans <- htmlDiv(
 app$layout(
   # Add Title
   div_header,
-  instructions,
   # This Div is for the entire dashboard
-  htmlDiv(
-    list(
-      ##LHS of dashboard with group dropdown and density plot
-      htmlDiv(list(dccMarkdown("**Data Exploration**"),
-                   group_density, 
-                   dens.graph),
-              style=list('width'='45%',
-                         margin=20)), #end of LHS of Dashboard
-      
-      ##RHS of dashboard with scatterplot and filters/dropdowns/radios
-      htmlDiv(list(dccMarkdown("**Data Analysis**"),
-                   htmlDiv(
-                     list(htmlLabel('Filter Listings by Price'),
-                          price_slider),
-                     style=list('width'='80%',
-                                'padding-left'='10%',
-                                'padding-right'='20%',
-                                margin=5)), 
-                   htmlDiv(
-                     list(htmlLabel('Filter Listings by Minimum Night Stay'),
-                          stay_slider),
-                     style=list('width'='80%',
-                                'padding-left'='10%',
-                                'padding-right'='20%',
-                                margin=5)),
-                   htmlDiv(
-                     list(htmlLabel('Filter Listings by Distance from City Center (Percentile)'),
-                          dist_slider),
-                     style=list('width'='80%',
-                                'padding-left'='10%',
-                                'padding-right'='20%',
-                                margin=5)),
-                   htmlDiv(list(scatterplot_xaxis,
-                                scatterplot_trans),
-                           style=list('display'='flex')),
-                   scat_graph),
-              style=list('width'='50%'))
-      ),
-    style=list('display'='flex')
-    )
+  main_tabs
 )
 
 ## App Callbacks ####
+
+#Callback for Tabs and their Content
+app$callback(
+  output = list(id='tabs-content', property='children'),
+  
+  params = list(input(id='tabs', 'value')),
+  
+  function(tab) {
+    render_content(tab)
+  }
+)
 
 # Grouped Density Plot
 app$callback(

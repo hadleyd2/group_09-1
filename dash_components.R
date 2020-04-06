@@ -6,7 +6,7 @@
 heading_title <- htmlH1('Airbnb.com Listing Prices in Barcelona, Spain') 
 
 #Sub-title for Author
-heading_name <- htmlH3('Daniel Hadley')
+heading_name <- htmlH3('STAT547M Project by: Daniel Hadley')
 
 # Instructions
 instructions <- dccMarkdown("
@@ -130,6 +130,18 @@ y.button <- dccRadioItems(
                  list(label = 'Reciprocal', value = 'reciprocal')),
   value = 'none'
 )
+
+# Tabs
+main_tabs <- htmlDiv(
+  list(dccTabs(id="tabs", value='tab-1',
+               children=list(
+                 dccTab(label="Welcome", value='tab-1'),
+                 dccTab(label="Data Exploration", value='tab-2'),
+                 dccTab(label="Data Analysis", value='tab-3')) #end of children
+  ), #end of dccTabs()
+  htmlDiv(id='tabs-content')
+  ) #end of list()
+) #end of htmlDiv()
 
 
 

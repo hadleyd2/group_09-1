@@ -98,3 +98,48 @@ make_scatter <- function(xaxis='reviews',
   
   ggplotly(p)
 }
+
+## Tabs
+
+render_content <- function(tab) {
+  if (tab == 'tab-1') {
+    ## Markdown Text and Image
+    htmlDiv(list(instructions),
+            style=list('justify-content'='center'))
+  } else if (tab == 'tab-2') {
+    ## Histogram with dropdown for diamond clarity and
+    ## radio option for y-axis scale
+    htmlDiv(list(group_density, 
+                 dens.graph),
+            style=list('width'='45%',
+                       margin=20))
+  } else if (tab == 'tab-3') {
+    ## Two diamond cut plots controlled by slider
+    htmlDiv(list(htmlDiv(
+                   list(htmlLabel('Filter Listings by Price'),
+                        price_slider),
+                   style=list('width'='80%',
+                              'padding-left'='10%',
+                              'padding-right'='20%',
+                              margin=5)), 
+                 htmlDiv(
+                   list(htmlLabel('Filter Listings by Minimum Night Stay'),
+                        stay_slider),
+                   style=list('width'='80%',
+                              'padding-left'='10%',
+                              'padding-right'='20%',
+                              margin=5)),
+                 htmlDiv(
+                   list(htmlLabel('Filter Listings by Distance from City Center (Percentile)'),
+                        dist_slider),
+                   style=list('width'='80%',
+                              'padding-left'='10%',
+                              'padding-right'='20%',
+                              margin=5)),
+                 htmlDiv(list(scatterplot_xaxis,
+                              scatterplot_trans),
+                         style=list('display'='flex')),
+                 scat_graph),
+            style=list('width'='80%'))
+  }
+}
