@@ -17,7 +17,7 @@ suppressPackageStartupMessages(library(tidyverse))
 suppressPackageStartupMessages(library(plotly))
 
 ## Load Data ####
-df <- read_csv(file=here::here("data", "clean_listings.csv"),
+df <- read_csv(file='https://raw.githubusercontent.com/hadleyd2/group_09-1/master/data/clean_listings.csv',
                col_types=cols()) %>% 
   mutate(min_stay = factor(min_stay))
 
