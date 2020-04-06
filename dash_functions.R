@@ -4,6 +4,8 @@ make_violin <- function(xaxis="all") {
   #get label matching grouping factor
   x_label <- groupKey$label[groupKey$value==xaxis]
   
+  if (xaxis == "min_stay") df$min_stay <- paste0(df$min_stay, " Night")
+  
   #create ggplot when no grouping is selected
   if (x_label == "No Grouping") {
     p <- df %>% 
