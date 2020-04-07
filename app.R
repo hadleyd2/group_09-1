@@ -130,5 +130,5 @@ app$callback(
   })
 
 ## Run App ####
-# app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) #used for deployment
-app$run_server(debug=TRUE) #uncomment for local testing
+app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) #used for deployment
+# app$run_server(debug=TRUE) #uncomment for local testing
