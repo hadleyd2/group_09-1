@@ -1,5 +1,6 @@
 # Group 09
-Repository for Kristina Wright and Daniel Hadley group project for [STAT 547M](https://stat545.stat.ubc.ca/)
+Repository for Kristina Wright and Daniel Hadley group project (up to milestone 03) for [STAT 547M](https://stat545.stat.ubc.ca/)
+For Milestone 04 thru Milestone 06, this repository has Daniel Hadley's project.
 
 ## 1. About This Repository :information_source:
 > This repository houses Group 09's project for STAT 547M taken in Term 2 of the 2019-2020 academic here.
