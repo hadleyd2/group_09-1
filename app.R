@@ -65,7 +65,8 @@ app$layout(
   # Add Title
   div_header,
   # This Div is for the entire dashboard
-  main_tabs
+  main_tabs,
+  htmlDiv(dccLink('Data Source ', href='http://data.insideairbnb.com/spain/catalonia/barcelona/2019-11-09/visualisations/listings.csv'))
 )
 
 ## App Callbacks ####
