@@ -66,7 +66,11 @@ app$layout(
   div_header,
   # This Div is for the entire dashboard
   main_tabs,
-  htmlDiv(dccLink('Data Source ', href='http://data.insideairbnb.com/spain/catalonia/barcelona/2019-11-09/visualisations/listings.csv'))
+  htmlDiv(dccLink('Data Source', href='http://insideairbnb.com/get-the-data.html')),
+  htmlDiv(dccLink('Open this link in a new tab to download raw data ', 
+          href='http://data.insideairbnb.com/spain/catalonia/barcelona/2019-11-09/visualisations/listings.csv')),
+  dccLink('Github Repo', 
+          href='https://github.com/hadleyd2/group_09-1')
 )
 
 ## App Callbacks ####
@@ -126,5 +130,5 @@ app$callback(
   })
 
 ## Run App ####
-app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) #used for deployment
-# app$run_server(debug=TRUE) #uncomment for local testing
+# app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) #used for deployment
+app$run_server(debug=TRUE) #uncomment for local testing
