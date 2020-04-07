@@ -13,15 +13,46 @@ instructions <- dccMarkdown("
 
 Welcome to my dashboard where we explore Airbnb listings for Barcelona! 
 In particular, this dashboard should help you find variables linearly related to listing prices.
+There are two options to aid you in this quest!
+Use the **Data Exploration** tab to get an idea of the price density of all listings or the price density of listings by group.
+Use the **Data Analysis** tab to help pick the variables in a possible linear regression model by viewing how they are related to price under various transformations.
 
-Under **Data Exploration**, you can view the price density for all listings or select a grouping variable from the dropdown and view the price density by group.
+## Data Exploration
 
-Under **Data Analysis**, you can filter listings by price, minimum night stay, or the distance from city center. 
-You can select a range of values for all three filters, and the filters work together to filter listings meeting all criteria.
-Additionally, a scatterplot is presented with a trendline to allow you to view the linear relationship between price 
-and the variable you select from the *Select Independent Variable* dropdown.
-Finally, you can apply transformations to either price or the independent variable to see if this improves
-the linear relationship.")
+  - The default value shows the price density for all listings in the dataset.
+  
+  - Select a grouping variable from the dropdown to view a violin plot, which shoes the price density for each group of the chosen grouping variable side-by-side.
+
+## Data Analysis
+
+  - Filters are provided to help narrow down the listings to those of interest based on price, minimum night stay, and distance from city center.
+  These filters are range filters, so you can select values for any of the three criteria 
+  and include all listings whose characteristics fall within the upper and lower limits of those criteria. 
+  The default limits listing to aid in the loading speed of this tab.
+  
+    - The dataset only includes listings priced at under 500 Euro's per night. Select an applicable range of prices on a continuous scale. 
+      Note that you cannot select a value lower than the minimum listing price.
+      
+    - Listings may have a minimum number of nights that a guest must book. Use this filter to select a range of minimum night stays of interest.
+      
+    - The city center is determined by Google maps when typing in Barcelona, Spain. 
+      The distance from this point is calculated as the Euclidean distance using longitude and latitude coordinates.
+      Since the raw value of these distances can be hard to interpret, the options are the listings within a range of percentile values for distance.
+  
+  - The scatterplot shows the price and independent variable coordinates as chosen from the dropdown. 
+  You can then apply transformations to price, the independent variable, or both.
+  A trendline is shown to aid in your visual assessment of the linear fit.
+  
+    - If the independent variable is chosen as Minimum Night Stay, then this is treated as a grouping variable in the regression, 
+      where the lowest minimum night stay is considered the reference group. 
+      The resulting scatterplot uses jittered points to avoid overplotting.
+    
+    - If the independent variable is Minimum Night Stay and the limits of the minimum night stay filter are the same, the trendline is the mean price.
+    
+    - When the independent variable is chosen as any other variable, it is treated as a continuous, numeric variable with the usual interpretations
+    of the ratio level of measurement.
+                            
+")
 
 ## Grouped Density Plot Components (and its dependencies) ####
 
@@ -68,7 +99,7 @@ price_slider <- dccRangeSlider(id='price-slider',
                                min=0,
                                max=500,
                                marks=price.mrks,
-                               value=list(0, 100))
+                               value=list(0, 50))
 
 # Minimum Night Stay Slider
 
@@ -78,7 +109,7 @@ stay_slider <- dccRangeSlider(id='stay-slider',
                          min=1,
                          max=5,
                          marks=stay.mrks,
-                         value=list(5, 5)) ## be sure to change back to 1, 5
+                         value=list(1, 2)) ## be sure to change back to 1, 5
 
 # Distance Percentile Slider
 
@@ -88,7 +119,7 @@ dist_slider <- dccRangeSlider(id='dist-slider',
                          min=1,
                          max=5,
                          marks=dist.mrks,
-                         value=list(1, 5))
+                         value=list(1, 2))
 
 # X-axis options for Scatter Plot
 xaxisKey <- tibble(label = c("Latitude", "Longitude", "Reviews", "Reviews Per Month", "Minimum Stay", "Host Listings", "Distance"),
@@ -101,7 +132,7 @@ xaxis.Dropdown <- dccDropdown(
     1:nrow(xaxisKey), function(i){
       list(label=xaxisKey$label[i], value=xaxisKey$value[i])
     }),
-  value = "reviews"
+  value = "latitude"
 )
 
 
