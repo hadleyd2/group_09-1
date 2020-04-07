@@ -91,6 +91,12 @@ Maria lives in Barcelona and wants to rent out her apartment while she travels f
 
 ### Dashboard Usage
 
+There are two ways to view the dashboard.
+
+1. Click on [this link](https://dan-final.herokuapp.com/) to run the deployed dashboard on [heroku](https://www.heroku.com/).
+
+1. Run the dashboard locally by taking the following steps:
+
   - Clone this repository locally
   
   - From the main repo directory in Terminal, run the dashboard by entering the command: `Rscript app.R`
